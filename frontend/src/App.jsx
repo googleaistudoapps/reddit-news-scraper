@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
 
+// API Base URL: Use Render backend in production, localhost for development
+const API_BASE = import.meta.env.PROD
+  ? 'https://reddit-news-scraper-api.onrender.com'
+  : 'http://localhost:8000';
+
 function App() {
   const [signals, setSignals] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +16,7 @@ function App() {
   const fetchSignals = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:8000/signals');
+      const res = await fetch(`${API_BASE}/signals`);
       const data = await res.json();
       setSignals(data);
     } catch (err) {
@@ -23,7 +28,7 @@ function App() {
 
   const fetchConfig = async () => {
     try {
-      const res = await fetch('http://localhost:8000/config');
+      const res = await fetch(`${API_BASE}/config`);
       const data = await res.json();
       setTopics(data.subreddits || []);
     } catch (err) {
@@ -33,7 +38,7 @@ function App() {
 
   const updateConfig = async (newTopics) => {
     try {
-      await fetch('http://localhost:8000/config', {
+      await fetch(`${API_BASE}/config`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ subreddits: newTopics })
@@ -49,7 +54,7 @@ function App() {
       setScanning(true);
       // Ensure the backend uses the LATEST topics from our state
       await updateConfig(topics);
-      const res = await fetch('http://localhost:8000/run-scan', { method: 'POST' });
+      const res = await fetch(`${API_BASE}/run-scan`, { method: 'POST' });
       if (res.ok) {
         await fetchSignals();
       } else {
