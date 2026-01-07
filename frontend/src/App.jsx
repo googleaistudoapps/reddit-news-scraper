@@ -3,7 +3,7 @@ import './index.css';
 
 // API Base URL: Use Render backend in production, localhost for development
 const API_BASE = import.meta.env.PROD
-  ? 'https://reddit-news-scraper-api.onrender.com'
+  ? 'https://reddit-news-scraper.onrender.com'
   : 'http://localhost:8000';
 
 function App() {
