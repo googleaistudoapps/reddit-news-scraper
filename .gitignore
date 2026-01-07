@@ -3,8 +3,8 @@
 
 # Temporary files
 .tmp/
-*.json
-!config.json
+# Only ignore specific json files in the root if they are temporary
+# reddit_news_raw.json etc are already in .tmp/
 
 # OS-specific files
 .DS_Store
