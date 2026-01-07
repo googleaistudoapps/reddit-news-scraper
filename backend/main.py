@@ -4,9 +4,6 @@ import json
 import os
 import subprocess
 
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-
 app = FastAPI()
 
 # Enable CORS for frontend communication
@@ -16,16 +13,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-DIST_PATH = "frontend/dist"
-
-@app.get("/")
-async def serve_index():
-    if os.path.exists(os.path.join(DIST_PATH, "index.html")):
-        return FileResponse(os.path.join(DIST_PATH, "index.html"))
-    return {"message": "Frontend not built. Please run 'npm run build' in the frontend directory."}
-
-app.mount("/assets", StaticFiles(directory=os.path.join(DIST_PATH, "assets")), name="assets")
 
 CLEANED_POSTS_PATH = ".tmp/cleaned_posts.json"
 CONFIG_PATH = "config.json"
